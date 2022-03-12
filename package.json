@@ -1,5 +1,5 @@
 {
-  "name": "letsmaster",
+  "name": "iinact",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,9 +9,23 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/redux-logger": "^3.0.9",
+    "autoprefixer": "^10.4.2",
+    "axios": "^0.26.1",
+    "lodash": "^4.17.21",
     "next": "12.1.0",
+    "next-pwa": "^5.4.6",
+    "next-redux-wrapper": "^7.0.5",
+    "postcss": "^8.4.7",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-redux": "^7.2.6",
+    "redux": "^4.1.2",
+    "redux-logger": "^3.0.6",
+    "redux-promise-middleware": "^6.1.2",
+    "redux-thunk": "^2.4.1",
+    "tailwindcss": "^3.0.23",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/node": "17.0.21",
