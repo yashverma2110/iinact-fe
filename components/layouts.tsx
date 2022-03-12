@@ -12,10 +12,14 @@ const Layout = ({ children }: any) => {
   useEffect(() => {
     const token = localStorage.getItem("xt@k#n");
 
+    if (!token) {
+      router.push("/login");
+    }
+
     if (!user && token) {
       dispatch(getUser({ token }));
     }
-  }, [user, dispatch]);
+  }, [user, dispatch, router]);
 
   // redirects to login if token is invalid or the get user API fails
   useEffect(() => {
