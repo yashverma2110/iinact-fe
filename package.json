@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/react-transition-group": "^4.4.4",
     "@types/redux-logger": "^3.0.9",
     "autoprefixer": "^10.4.2",
     "axios": "^0.26.1",
@@ -19,7 +20,9 @@
     "postcss": "^8.4.7",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-icons": "^4.3.1",
     "react-redux": "^7.2.6",
+    "react-transition-group": "1.x",
     "redux": "^4.1.2",
     "redux-logger": "^3.0.6",
     "redux-promise-middleware": "^6.1.2",

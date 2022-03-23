@@ -5,9 +5,11 @@ import { createWrapper } from "next-redux-wrapper";
 
 // reducers
 import authReducer from "./auth/reducer.auth";
+import listReducer from "./lists/reducer.lists";
 
 const reducer = combineReducers({
   auth: authReducer,
+  lists: listReducer,
 });
 
 const store = () => createStore(reducer, applyMiddleware(promise, logger));
