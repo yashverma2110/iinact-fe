@@ -5,7 +5,11 @@ interface CardProps {
 }
 
 const Card = ({ children }: CardProps) => {
-  return <div className="shadow-lg p-4 rounded bg-white">{children}</div>;
+  return (
+    <div className="shadow-lg p-4 rounded bg-white border border-slate-100">
+      {children}
+    </div>
+  );
 };
 
 export default Card;

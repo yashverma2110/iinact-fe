@@ -8,7 +8,7 @@ interface loginPayload {
 const login = (data: loginPayload) => {
   return {
     type: authActionTypes.LOGIN,
-    payload: API_SERVICE.post("/user/login", data),
+    payload: API_SERVICE.post("user/login", data),
   };
 };
 
@@ -21,7 +21,7 @@ interface signupPayload {
 const signup = (data: signupPayload) => {
   return {
     type: authActionTypes.SIGNUP,
-    payload: API_SERVICE.post("/user/signup", data),
+    payload: API_SERVICE.post("user/signup", data),
   };
 };
 
@@ -31,7 +31,7 @@ interface getUserPayload {
 const getUser = (data: getUserPayload) => {
   return {
     type: authActionTypes.GET_USER,
-    payload: API_SERVICE.get("/user/details", {
+    payload: API_SERVICE.get("user/details", {
       headers: {
         Authorization: "Bearer " + data.token,
       },
