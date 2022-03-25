@@ -7,6 +7,7 @@ import { login } from "../redux/auth/actions.auth";
 import * as yup from "yup";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import Button from "../components/Button";
 
 const Login = () => {
   const [formData, setFormData] = useState<any>({});
@@ -19,7 +20,9 @@ const Login = () => {
   useEffect(() => {
     if (user) {
       localStorage.setItem("xt@k#n", user.token);
-      router.push("/dashboard");
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 200);
     }
   }, [user, router]);
 
@@ -95,12 +98,12 @@ const Login = () => {
                     Don&apos;t have an account?
                   </div>
                 </Link>
-                <button
-                  className="w-full rounded-full shadow py-2 px-4 bg-red-400 text-white font-bold hover:animate-pulse text-xl md:w-1/2"
+                <Button
+                  title="Enter"
+                  classes="w-full"
+                  loading={loading}
                   onClick={handleLogin}
-                >
-                  Enter
-                </button>
+                />
               </div>
             </div>
             {loginError && (

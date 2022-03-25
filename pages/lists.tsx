@@ -5,21 +5,24 @@ import Dropdown from "../components/Dropdown";
 import Input from "../components/Input";
 import Layout from "../components/layouts";
 import Modal from "../components/Modal";
-import { linkRegex, listTypes, listTypesEnum } from "../config/constants";
+import { linkRegex, listTypes } from "../config/constants";
 import * as yup from "yup";
-import { createList, getListsByUser } from "../redux/lists/actions.lists";
-import { isEmpty } from "lodash";
+import {
+  createList,
+  getListsByUser,
+  editList,
+} from "../redux/lists/actions.lists";
 import Button from "../components/Button";
 import Card from "../components/Card";
 import LinkItem from "../components/LinkItem";
-import { link } from "fs";
 import { getStringForListType } from "../config/methods";
 import Toggle from "../components/Toggle";
+import ListCardLoading from "../components/Loading/ListCardLoading";
 
 const Lists = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state: any) => state.auth);
-  const { createdList, usersLists, loading, error } = useSelector(
+  const { listLoading, usersLists, loading, error } = useSelector(
     (state: any) => state.lists
   );
 
@@ -27,6 +30,7 @@ const Lists = () => {
   const [listFormData, setlistFormData] = useState<any>({});
   const [isListFormInView, setisListFormInView] = useState(false);
   const [errors, setErrors] = useState<any>({});
+  const [isListEditMode, setisListEditMode] = useState(false);
 
   useEffect(() => {
     dispatch(getListsByUser());
@@ -37,6 +41,7 @@ const Lists = () => {
 
     setlistFormData({});
     setisListFormInView(false);
+    setisListEditMode(false);
   }, [isCreateListModalOpen]);
 
   const handleNextClick = async () => {
@@ -90,10 +95,24 @@ const Lists = () => {
     }));
   };
 
-  const handleCreateList = () => {
-    const createListData = { ...listFormData };
-    delete createListData.link;
-    dispatch(createList(createListData));
+  const handleMutateList = () => {
+    const listData = { ...listFormData };
+    delete listData.link;
+
+    if (isListEditMode) {
+      const listId = listData._id;
+      delete listData.createdAt;
+      delete listData._id;
+      dispatch(editList(listId, listData));
+      return;
+    }
+    dispatch(createList(listData));
+  };
+
+  const handleEditList = (list: List) => {
+    setisListEditMode(true);
+    setlistFormData(list);
+    setIsCreateListModalOpen(true);
   };
 
   return (
@@ -110,9 +129,14 @@ const Lists = () => {
         <div>
           <Button title="Create" onClick={toggleCreateListModal} />
 
-          <div className="grid grid-cols-1 mt-4 md:grid-cols-3 md:gap-2">
+          <div className="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2 lg:grid-cols-3">
+            {listLoading &&
+              [...Array(4)].map((item, index) => (
+                <ListCardLoading key={index} />
+              ))}
+
             {usersLists.map((list: List) => (
-              <Card key={list._id}>
+              <Card key={list._id + list.updatedAt}>
                 <div className="text-base flex items-center justify-between text-black md:text-lg">
                   {list.name}
                   <Toggle
@@ -132,19 +156,41 @@ const Lists = () => {
                     <LinkItem key={link} link={link} />
                   ))}
                 </div>
+                <div
+                  className={`flex my-4 ${
+                    false ? "justify-evenly" : "justify-center"
+                  }`}
+                >
+                  {user?._id === list.user && (
+                    <Button
+                      classes="w-full mr-1"
+                      title="Edit"
+                      onClick={() => handleEditList(list)}
+                    />
+                  )}
+                  <Button
+                    classes="w-full ml-1"
+                    title="Play"
+                    onClick={() => {}}
+                  />
+                </div>
               </Card>
             ))}
           </div>
 
-          {/* Create list modal */}
+          {/* Create/edit list modal */}
           <Modal
             show={isCreateListModalOpen}
-            title="Create a list"
-            subtitle="Create a playlist of urls that you wish to track, use and share them on the go"
+            title={isListEditMode ? "Edit your list" : "Create a list"}
+            subtitle={
+              isListEditMode
+                ? ""
+                : "Create a playlist of urls that you wish to track, use and share them on the go"
+            }
             onClose={toggleCreateListModal}
             primaryBtn={{
-              title: isListFormInView ? "Create" : "Next",
-              onClick: isListFormInView ? handleCreateList : handleNextClick,
+              title: isListFormInView ? "Save" : "Next",
+              onClick: isListFormInView ? handleMutateList : handleNextClick,
               loading: loading,
             }}
             closeBtn={{
@@ -159,7 +205,7 @@ const Lists = () => {
               {isListFormInView ? (
                 <div className="flex flex-col">
                   <div>
-                    <div className="flex flex-col mt-2 p-2 shadow-inner bg-slate-100 rounded h-40 max-h-40 overflow-y-auto">
+                    <div className="flex flex-col mt-2 p-2 shadow-inner bg-slate-100 rounded h-52 max-h-52 overflow-y-auto">
                       {listFormData.urls?.map((link: string) => {
                         return <LinkItem key={link} link={link} />;
                       })}
@@ -200,6 +246,7 @@ const Lists = () => {
                     name="name"
                     label="Name"
                     type="text"
+                    value={listFormData.name}
                     placeholder="Leetcode graphs"
                     setFormState={setlistFormData}
                     errorMessage={errors.name}
@@ -209,6 +256,7 @@ const Lists = () => {
                     name="description"
                     label="Description"
                     type="text"
+                    value={listFormData.description}
                     placeholder="An exhaustive list for questions based on graphs, category: easy/medium"
                     setFormState={setlistFormData}
                     rows={3}

@@ -50,6 +50,7 @@ const Input = ({
               " w-full bg-slate-100 p-4 rounded-full show-inner text-sm tracking-tight font-semibold"
             }
             name={name}
+            defaultValue={value}
             placeholder={placeholder}
             onChange={(e) =>
               setFormState((formState: any) => ({
@@ -65,6 +66,7 @@ const Input = ({
               classes +
               "bg-slate-100 p-2 rounded-full shadow-inner w-full text-sm tracking-tight font-semibold"
             }
+            defaultValue={value}
             name={name}
             type={isPasswordShowing ? "text" : type}
             placeholder={placeholder}

@@ -27,7 +27,7 @@ const Modal = ({
 
   return (
     <div className="overlay h-screen w-screen absolute top-0 left-0 flex justify-center items-end md:items-center">
-      <div className="modal bg-white shadow-lg p-4 rounded relative">
+      <div className="modal bg-white shadow-lg p-4 rounded relative w-full md:max-w-screen-sm">
         <button
           className="absolute text-sm top-2 right-2 font-bold text-white w-5 h-5 bg-slate-300 flex justify-center items-center rounded-full"
           onClick={onClose}
