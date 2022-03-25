@@ -5,16 +5,21 @@ import Dropdown from "../components/Dropdown";
 import Input from "../components/Input";
 import Layout from "../components/layouts";
 import Modal from "../components/Modal";
-import { linkRegex, listTypes } from "../config/constants";
+import { linkRegex, listTypes, listTypesEnum } from "../config/constants";
 import * as yup from "yup";
 import { createList, getListsByUser } from "../redux/lists/actions.lists";
 import { isEmpty } from "lodash";
 import Button from "../components/Button";
+import Card from "../components/Card";
+import LinkItem from "../components/LinkItem";
+import { link } from "fs";
+import { getStringForListType } from "../config/methods";
+import Toggle from "../components/Toggle";
 
 const Lists = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state: any) => state.auth);
-  const { createdList, loading, error } = useSelector(
+  const { createdList, usersLists, loading, error } = useSelector(
     (state: any) => state.lists
   );
 
@@ -33,13 +38,6 @@ const Lists = () => {
     setlistFormData({});
     setisListFormInView(false);
   }, [isCreateListModalOpen]);
-
-  //* closes create list modal after list creation is successfull
-  useEffect(() => {
-    if (!loading && !error && !isEmpty(createdList)) {
-      toggleCreateListModal();
-    }
-  }, [loading, error, createdList, toggleCreateListModal]);
 
   const handleNextClick = async () => {
     const listDetailsValidation = yup.object().shape({
@@ -109,8 +107,36 @@ const Lists = () => {
       </Head>
 
       <Layout>
-        <div className="flex">
+        <div>
           <Button title="Create" onClick={toggleCreateListModal} />
+
+          <div className="grid grid-cols-1 mt-4 md:grid-cols-3 md:gap-2">
+            {usersLists.map((list: List) => (
+              <Card key={list._id}>
+                <div className="text-base flex items-center justify-between text-black md:text-lg">
+                  {list.name}
+                  <Toggle
+                    label="Public"
+                    selected={list.public}
+                    onChange={() => console.log("changed")}
+                  />
+                </div>
+                <div className="text-xs text-slate-600 md:text-sm">
+                  {list.description}
+                </div>
+                <div className="text-sm mt-2">
+                  Resource: <b>{getStringForListType(list.type)}</b>
+                </div>
+                <div className="flex flex-col bg-slate-100 shadow-inner max-h-52 overflow-y-auto mt-2 p-2">
+                  {list.urls.map((link) => (
+                    <LinkItem key={link} link={link} />
+                  ))}
+                </div>
+              </Card>
+            ))}
+          </div>
+
+          {/* Create list modal */}
           <Modal
             show={isCreateListModalOpen}
             title="Create a list"
@@ -135,17 +161,7 @@ const Lists = () => {
                   <div>
                     <div className="flex flex-col mt-2 p-2 shadow-inner bg-slate-100 rounded h-40 max-h-40 overflow-y-auto">
                       {listFormData.urls?.map((link: string) => {
-                        return (
-                          <a
-                            className="text-red-400 bg-white shadow rounded-full p-2 my-2 font-semibold text-xs md:text-sm"
-                            key={link}
-                            href={link}
-                            rel="noopener noreferrer"
-                            target="_blank"
-                          >
-                            {link}
-                          </a>
-                        );
+                        return <LinkItem key={link} link={link} />;
                       })}
                     </div>
                     <div className="flex h-2 w-6/7">

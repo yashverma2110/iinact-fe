@@ -1,5 +1,6 @@
 import { list } from "postcss";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { FaCaretDown } from "react-icons/fa";
 
 type listItem = {
   title: string;
@@ -67,13 +68,13 @@ const Dropdown = ({
         <button
           className={
             classes +
-            " w-full flex bg-slate-100 p-4 rounded-full show-inner text-sm tracking-tight font-semibold"
+            " w-full flex items-center bg-slate-100 p-4 rounded-full show-inner text-sm tracking-tight font-semibold"
           }
           onClick={toggleDropdown}
         >
           {getListItemForValue(value ?? defaultValue)?.title}
           <div className="ml-auto" onClick={toggleDropdown}>
-            v
+            <FaCaretDown />
           </div>
         </button>
         <div

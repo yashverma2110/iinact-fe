@@ -1,3 +1,5 @@
+import { listTypesEnum } from "./constants";
+
 export const getTitle = (url: string, callback: (title: string) => void) => {
   fetch(`https://crossorigin.me/${url}`)
     .then((response) => response.text())
@@ -17,4 +19,17 @@ export const getToken = () => {
   }
 
   return null;
+};
+
+export const getStringForListType = (type: string) => {
+  switch (type) {
+    case listTypesEnum.LEET_CODE:
+      return "LeetCode";
+    case listTypesEnum.CODE_FORCES:
+      return "CodeForces";
+    case listTypesEnum.YOU_TUBE:
+      return "YouTube";
+    default:
+      return "Other";
+  }
 };

@@ -111,7 +111,7 @@ const Layout = ({ children }: any) => {
           </div>
         </div>
 
-        <div className="p-4 bg-slate-100 max-h-full overflow-y-auto">
+        <div className="p-4 bg-slate-100 h-2/3 overflow-y-auto md:h-3/4">
           {children}
         </div>
       </main>

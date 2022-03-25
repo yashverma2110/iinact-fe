@@ -12,6 +12,7 @@ interface InputProps {
   errorMessage?: string;
   setFormState: Dispatch<SetStateAction<any>>;
   rows?: number;
+  value?: any;
 }
 
 const Input = ({
@@ -25,6 +26,7 @@ const Input = ({
   errorMessage,
   setFormState,
   rows = 0,
+  value = "",
 }: InputProps) => {
   const [isPasswordShowing, setIsPasswordShowing] = useState(false);
 
@@ -48,6 +50,7 @@ const Input = ({
               " w-full bg-slate-100 p-4 rounded-full show-inner text-sm tracking-tight font-semibold"
             }
             name={name}
+            value={value}
             placeholder={placeholder}
             onChange={(e) =>
               setFormState((formState: any) => ({
@@ -66,6 +69,7 @@ const Input = ({
             name={name}
             type={isPasswordShowing ? "text" : type}
             placeholder={placeholder}
+            value={value}
             onChange={(e) =>
               setFormState((formState: any) => ({
                 ...formState,

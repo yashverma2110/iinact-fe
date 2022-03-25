@@ -1,15 +1,21 @@
+export enum listTypesEnum {
+  LEET_CODE = "lc",
+  YOU_TUBE = "yt",
+  CODE_FORCES = "cf",
+}
+
 export const listTypes = [
   {
     title: "LeetCode",
-    value: "lc",
+    value: listTypesEnum.LEET_CODE,
   },
   {
     title: "YouTube",
-    value: "yt",
+    value: listTypesEnum.YOU_TUBE,
   },
   {
     title: "Codeforces",
-    value: "cf",
+    value: listTypesEnum.CODE_FORCES,
   },
 ];
 
