@@ -19,9 +19,8 @@ const Signup = () => {
   useEffect(() => {
     if (user) {
       localStorage.setItem("xt@k#n", user.token);
-      setTimeout(() => {
-        router.push("/dashboard");
-      }, 200);
+      localStorage.setItem("iin-user", JSON.stringify(user));
+      router.push("/dashboard");
     }
   }, [user, router]);
 

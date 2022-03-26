@@ -15,13 +15,12 @@ import {
 import Button from "../components/Button";
 import Card from "../components/Card";
 import LinkItem from "../components/LinkItem";
-import { getStringForListType } from "../config/methods";
+import { getStringForListType, getUser } from "../config/methods";
 import Toggle from "../components/Toggle";
 import ListCardLoading from "../components/Loading/ListCardLoading";
 
 const Lists = () => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state: any) => state.auth);
   const { listLoading, usersLists, loading, error } = useSelector(
     (state: any) => state.lists
   );
@@ -161,7 +160,7 @@ const Lists = () => {
                     false ? "justify-evenly" : "justify-center"
                   }`}
                 >
-                  {user?._id === list.user && (
+                  {getUser()._id === list.user && (
                     <Button
                       classes="w-full mr-1"
                       title="Edit"

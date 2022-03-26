@@ -21,6 +21,16 @@ export const getToken = () => {
   return null;
 };
 
+export const getUser = () => {
+  if (typeof window !== "undefined") {
+    // Perform localStorage action
+    const user = localStorage.getItem("iin-user");
+    return JSON.parse(user ?? "{}");
+  }
+
+  return null;
+};
+
 export const getStringForListType = (type: string) => {
   switch (type) {
     case listTypesEnum.LEET_CODE:
