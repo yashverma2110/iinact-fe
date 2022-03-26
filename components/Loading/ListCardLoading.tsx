@@ -1,5 +1,5 @@
 import React from "react";
-import Card from "../Card";
+import Card from "../Atomic/Card";
 import TextLoading from "./TextLoading";
 
 const ListCardLoading = () => {

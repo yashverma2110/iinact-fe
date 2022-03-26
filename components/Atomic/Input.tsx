@@ -1,18 +1,19 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import { string } from "yup";
 
 interface InputProps {
   label?: string;
   name: string;
   required?: boolean;
-  type: "text" | "number" | "password";
+  type: "text" | "number" | "password" | "date" | "time";
   placeholder: string;
   classes?: string;
   parentClasses?: string;
   errorMessage?: string;
-  setFormState: Dispatch<SetStateAction<any>>;
   rows?: number;
   value?: any;
+  setFormState?: Dispatch<SetStateAction<any>>;
+  onChange?: (value: any) => void;
 }
 
 const Input = ({
@@ -27,8 +28,23 @@ const Input = ({
   setFormState,
   rows = 0,
   value = "",
+  onChange,
 }: InputProps) => {
   const [isPasswordShowing, setIsPasswordShowing] = useState(false);
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    if (setFormState) {
+      setFormState((formState: any) => ({
+        ...formState,
+        [name]: e.target.value,
+      }));
+    }
+    if (onChange) {
+      onChange(e.target.value);
+    }
+  };
 
   return (
     <div className={parentClasses + " flex flex-col p-2 w-full"}>
@@ -52,12 +68,7 @@ const Input = ({
             name={name}
             defaultValue={value}
             placeholder={placeholder}
-            onChange={(e) =>
-              setFormState((formState: any) => ({
-                ...formState,
-                [name]: e.target.value,
-              }))
-            }
+            onChange={handleChange}
           />
         ) : (
           <input
@@ -70,12 +81,7 @@ const Input = ({
             name={name}
             type={isPasswordShowing ? "text" : type}
             placeholder={placeholder}
-            onChange={(e) =>
-              setFormState((formState: any) => ({
-                ...formState,
-                [name]: e.target.value,
-              }))
-            }
+            onChange={handleChange}
           />
         )}
         {errorMessage && (

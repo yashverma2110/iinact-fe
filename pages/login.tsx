@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
-import Input from "../components/Input";
+import Input from "../components/Atomic/Input";
 import styles from "../styles/pages/Login.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/auth/actions.auth";
 import * as yup from "yup";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Button from "../components/Button";
+import Button from "../components/Atomic/Button";
 
 const Login = () => {
   const [formData, setFormData] = useState<any>({});

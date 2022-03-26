@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
-import Input from "../components/Input";
+import Input from "../components/Atomic/Input";
 import styles from "../styles/pages/Login.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { signup } from "../redux/auth/actions.auth";

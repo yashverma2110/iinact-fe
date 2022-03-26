@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser } from "../redux/auth/actions.auth";
+import { getUser } from "../../redux/auth/actions.auth";
 
 const Layout = ({ children }: any) => {
   const dispatch = useDispatch();
