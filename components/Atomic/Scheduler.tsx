@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
-import { days } from "../../config/constants";
+import { daysInAWeek } from "../../config/constants";
 import Input from "./Input";
 
 interface SchedulerProps {
@@ -8,7 +8,7 @@ interface SchedulerProps {
 }
 
 const Scheduler = ({ onChange }: SchedulerProps) => {
-  const [daysToRemind, setDaysToRemind] = useState(days);
+  const [daysToRemind, setDaysToRemind] = useState(daysInAWeek);
   const [scheduleTime, setScheduleTime] = useState(dayjs().format("hh:mm A"));
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const Scheduler = ({ onChange }: SchedulerProps) => {
   return (
     <div>
       <div className="flex justify-evenly">
-        {days.map((day) => (
+        {daysInAWeek.map((day) => (
           <button
             className={`text-sm h-8 w-8 rounded-full shadow ${
               daysToRemind.includes(day) ? "bg-red-400" : "bg-slate-400"

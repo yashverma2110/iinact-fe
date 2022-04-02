@@ -6,7 +6,7 @@ interface TextLoadingProps {
   margin?: string;
 }
 
-const TextLoading = ({ height, width, margin = "" }: TextLoadingProps) => {
+const BoxLoading = ({ height, width, margin = "" }: TextLoadingProps) => {
   return (
     <div
       className={`${height} ${width} ${margin} bg-slate-200 animate-pulse rounded-lg`}
@@ -14,4 +14,4 @@ const TextLoading = ({ height, width, margin = "" }: TextLoadingProps) => {
   );
 };
 
-export default TextLoading;
+export default BoxLoading;

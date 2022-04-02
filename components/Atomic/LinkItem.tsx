@@ -10,7 +10,7 @@ const LinkItem = ({ link, classes = "" }: LinkItemProps) => {
     <div
       className={
         classes +
-        " bg-white shadow rounded-full p-2 my-2 w-full max-w-full overflow-hidden overflow-ellipsis"
+        " bg-white shadow rounded-full px-2 my-1 w-full max-w-full overflow-hidden overflow-ellipsis"
       }
     >
       <a

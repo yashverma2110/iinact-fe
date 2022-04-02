@@ -25,4 +25,4 @@ const expression =
   "{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)";
 export const linkRegex = new RegExp(expression);
 
-export const days = ["M", "T", "W", "Th", "F", "Sat", "S"];
+export const daysInAWeek = ["M", "T", "W", "Th", "F", "Sat", "S"];
