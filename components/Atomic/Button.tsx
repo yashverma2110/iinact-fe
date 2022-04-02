@@ -8,6 +8,7 @@ export interface ButtonProps {
   onClick: () => void;
   loading?: boolean;
   disabled?: boolean;
+  icon?: React.ReactNode;
 }
 
 const Button = ({
@@ -17,6 +18,7 @@ const Button = ({
   onClick,
   loading = false,
   disabled = false,
+  icon,
 }: ButtonProps) => {
   return (
     <button
@@ -26,7 +28,16 @@ const Button = ({
       disabled={loading || disabled}
       onClick={onClick}
     >
-      {loading ? <FaSpinner className="animate-spin" /> : <span>{title}</span>}
+      {loading ? (
+        <FaSpinner className="animate-spin" />
+      ) : icon ? (
+        <>
+          <span className="block md:hidden">{icon}</span>
+          <span className="hidden md:block">{title}</span>
+        </>
+      ) : (
+        <span>{title}</span>
+      )}
     </button>
   );
 };

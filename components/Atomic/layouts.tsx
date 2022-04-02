@@ -1,7 +1,9 @@
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
+import { FaDoorOpen } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../redux/auth/actions.auth";
+import Button from "./Button";
 
 const Layout = ({ children }: any) => {
   const dispatch = useDispatch();
@@ -39,18 +41,33 @@ const Layout = ({ children }: any) => {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.clear();
+    setTimeout(() => {
+      router.push("/login");
+    });
+  };
+
   return (
     <div>
       <main className="h-screen">
         <div className="backGradient h-1/3 flex flex-col justify-between shadow-lg md:h-1/4">
           <div className="px-4 pt-4">
-            <div>
-              <div className="text-white italic font-bold text-2xl md:text-3xl">
-                iinact
+            <div className="flex justify-between items-start">
+              <div>
+                <div className="text-white italic font-bold text-2xl md:text-3xl">
+                  iinact
+                </div>
+                <div className="mt-1 text-xs text-white">
+                  An engaging progress tracking platform
+                </div>
               </div>
-              <div className="mt-1 text-xs text-white">
-                An engaging progress tracking platform
-              </div>
+              <Button
+                classes="md:text-xs"
+                title="Logout"
+                icon={<FaDoorOpen />}
+                onClick={handleLogout}
+              />
             </div>
           </div>
 

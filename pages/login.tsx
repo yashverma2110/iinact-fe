@@ -18,7 +18,7 @@ const Login = () => {
 
   // redirect to dashboard if loading is successful
   useEffect(() => {
-    if (user) {
+    if (user && user.token) {
       localStorage.setItem("xt@k#n", user.token);
       localStorage.setItem("iin-user", JSON.stringify(user));
       router.push("/dashboard");
