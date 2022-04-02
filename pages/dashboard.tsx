@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import { useDispatch, useSelector } from "react-redux";
 import Card from "../components/Atomic/Card";
@@ -11,6 +11,7 @@ import { daysInAWeek } from "../config/constants";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import Button from "../components/Atomic/Button";
 import ScheduleCardLoading from "../components/Loading/ScheduleCardLoading";
+import SubmitAttemptModal from "../components/SubmitAttemptModal";
 
 dayjs.extend(duration);
 dayjs.extend(duration);
@@ -19,6 +20,9 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state: any) => state.auth);
   const { loading, schedules } = useSelector((state: any) => state.schedules);
+
+  const [isSubmitAttemptModalShowing, setisSubmitAttemptModalShowing] =
+    useState(false);
 
   useEffect(() => {
     dispatch(getUserSchedules());
@@ -57,6 +61,10 @@ const Dashboard = () => {
     const seconds = remainingTime % 60;
 
     return `${hours}h ${minutes}m ${seconds}s`;
+  };
+
+  const toggleSubmitAttemptModal = () => {
+    setisSubmitAttemptModalShowing(!isSubmitAttemptModalShowing);
   };
 
   return (
@@ -111,7 +119,7 @@ const Dashboard = () => {
                   <div className="grid grid-cols-2 gap-2 mt-2">
                     <Button
                       title="Attempt"
-                      onClick={() => console.log("alll")}
+                      onClick={toggleSubmitAttemptModal}
                     />
                     <Button
                       title="Postpone"
@@ -123,6 +131,11 @@ const Dashboard = () => {
             })}
           </div>
         )}
+
+        <SubmitAttemptModal
+          isShowing={isSubmitAttemptModalShowing}
+          toggle={toggleSubmitAttemptModal}
+        />
       </Layout>
     </div>
   );
