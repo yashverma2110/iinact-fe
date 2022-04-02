@@ -24,7 +24,7 @@ const Button = ({
     <button
       className={`${classes} ${disabled || loading ? "bg-gray-300" : ""} ${
         type === "primary" ? "bg-red-400" : "bg-slate-300"
-      } rounded text-white flex justify-center items-center shadow p-2 text-xs md:text-lg`}
+      } rounded text-white flex justify-center items-center shadow p-2 text-xs md:text-sm`}
       disabled={loading || disabled}
       onClick={onClick}
     >
