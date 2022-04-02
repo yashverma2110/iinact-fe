@@ -10,7 +10,7 @@ import { getStringForListType, getUser } from "../config/methods";
 import Toggle from "../components/Atomic/Toggle";
 import ListCardLoading from "../components/Loading/ListCardLoading";
 import CreateEditListModal from "../components/CreateEditListModal";
-import PlayListModal from "../components/PlayListModal";
+import ScheduleListModal from "../components/PlayListModal";
 
 const Lists = () => {
   const dispatch = useDispatch();
@@ -105,7 +105,7 @@ const Lists = () => {
             setIsShowing={toggleCreateListModal}
             edit={listEditFormData}
           />
-          <PlayListModal
+          <ScheduleListModal
             list={listToPlay}
             isShowing={isPlayListModalShowing}
             setIsShowing={(show: boolean) => setisPlayListModalShowing(show)}

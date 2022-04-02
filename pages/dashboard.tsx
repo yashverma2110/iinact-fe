@@ -1,11 +1,62 @@
+import React, { useEffect } from "react";
 import Head from "next/head";
-import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Card from "../components/Atomic/Card";
 import Layout from "../components/Atomic/layouts";
+import LinkItem from "../components/Atomic/LinkItem";
+import { getUserSchedules } from "../redux/schedule/actions.schedule";
+import dayjs from "dayjs";
+import duration from "dayjs/plugin/duration";
+import { days } from "../config/constants";
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
+
+dayjs.extend(duration);
+dayjs.extend(duration);
 
 const Dashboard = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state: any) => state.auth);
+  const { schedules } = useSelector((state: any) => state.schedules);
+
+  useEffect(() => {
+    dispatch(getUserSchedules());
+  }, [dispatch]);
+
+  const getDurationToNextReminder = (schedule: Schedule) => {
+    const remindOnDays = schedule.days;
+    let dayToFind = dayjs().day() - 1;
+
+    while (true) {
+      const nearestDay = days[dayToFind];
+
+      if (remindOnDays.includes(nearestDay)) {
+        break;
+      }
+
+      dayToFind = (dayToFind + 1) % 7;
+    }
+
+    const [hours, minutes] = schedule.remindAt.split(":");
+
+    const minutesToRemindAt = parseInt(hours) * 60 + parseInt(minutes);
+
+    const dateToRemind = dayjs()
+      .add(dayToFind + 1 - dayjs().day(), "days")
+      .startOf("day")
+      .add(minutesToRemindAt, "minutes");
+
+    const diff = dateToRemind.diff(dayjs());
+
+    return dayjs.duration(diff).asSeconds();
+  };
+
+  const formatTimerDuration = (remainingTime: number) => {
+    const hours = Math.floor(remainingTime / 3600);
+    const minutes = Math.floor((remainingTime % 3600) / 60);
+    const seconds = remainingTime % 60;
+
+    return `${hours}h ${minutes}m ${seconds}s`;
+  };
 
   return (
     <div>
@@ -18,7 +69,40 @@ const Dashboard = () => {
       </Head>
 
       <Layout>
-        <div>Dashboard</div>
+        <div className="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2 lg:grid-cols-3">
+          {schedules.map((schedule: Schedule) => {
+            return (
+              <Card key={schedule._id}>
+                <div className="font-semibold text-base md:text-lg">
+                  {schedule.list.name}
+                </div>
+                <div className="text-sm text-slate-500">
+                  {schedule.list.description}
+                </div>
+
+                <div className="flex items-center my-2">
+                  <div className="text-sm mr-2">Scheduled: </div>
+                  <LinkItem classes="my-0" link={schedule.current} />
+                </div>
+
+                <div className="flex justify-center py-2">
+                  <CountdownCircleTimer
+                    isPlaying
+                    colors="#F77171"
+                    duration={getDurationToNextReminder(schedule)}
+                    size={110}
+                  >
+                    {({ remainingTime }) => (
+                      <div className="text-xs text-red-400 font-semibold">
+                        {formatTimerDuration(remainingTime)}
+                      </div>
+                    )}
+                  </CountdownCircleTimer>
+                </div>
+              </Card>
+            );
+          })}
+        </div>
       </Layout>
     </div>
   );

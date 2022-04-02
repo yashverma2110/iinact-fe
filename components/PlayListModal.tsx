@@ -11,7 +11,7 @@ interface PlayListModalProps {
   list: List | null;
 }
 
-const PlayListModal = ({
+const ScheduleListModal = ({
   isShowing,
   setIsShowing,
   list,
@@ -73,4 +73,4 @@ const PlayListModal = ({
   );
 };
 
-export default PlayListModal;
+export default ScheduleListModal;

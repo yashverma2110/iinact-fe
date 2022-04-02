@@ -10,3 +10,13 @@ interface List {
   createdAt: string;
   updatedAt: string;
 }
+interface Schedule {
+  list: List;
+  user: string;
+  remindAt: string;
+  days: string[];
+  current: string;
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
+}
