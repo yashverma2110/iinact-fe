@@ -10,6 +10,7 @@ interface List {
   createdAt: string;
   updatedAt: string;
 }
+
 interface Schedule {
   list: List;
   user: string;
@@ -19,4 +20,24 @@ interface Schedule {
   _id: string;
   createdAt: string;
   updatedAt: string;
+}
+
+interface Submission {
+  _id: string;
+  link: string;
+  list: string;
+  score: number;
+  reviewAgain: boolean;
+  remark?: string;
+  tag: string;
+  user: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface Tag {
+  _id: string;
+  name: string;
+  color: string;
+  user: string;
 }

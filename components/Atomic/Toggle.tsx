@@ -1,13 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 
 interface ToggleProps {
-  selected: boolean;
+  selected?: boolean;
   label?: string;
   loading?: boolean;
-  onChange: (value: boolean) => void;
+  name?: string;
+  setFormState?: React.Dispatch<SetStateAction<any>>;
+  onChange?: (value: boolean) => void;
+  classes?: string;
 }
 
-const Toggle = ({ selected, label, onChange, loading }: ToggleProps) => {
+const Toggle = ({
+  selected = false,
+  label,
+  onChange,
+  loading,
+  name,
+  setFormState,
+  classes = "",
+}: ToggleProps) => {
   const [value, setvalue] = useState(selected);
 
   useEffect(() => {
@@ -15,13 +26,20 @@ const Toggle = ({ selected, label, onChange, loading }: ToggleProps) => {
   }, [selected]);
 
   const toggle = () => {
-    onChange(!value);
+    onChange && onChange(!value);
+
+    if (name && setFormState) {
+      setFormState((formdata: any) => ({
+        ...formdata,
+        [name]: value,
+      }));
+    }
 
     setvalue(!value);
   };
 
   return (
-    <div className="flex items-center">
+    <div className={"flex items-center " + classes}>
       {label && (
         <label className="mr-2 text-slate-500 text-xs font-semibold md:text-sm">
           {label}

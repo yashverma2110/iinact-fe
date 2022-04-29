@@ -1,32 +1,32 @@
 {
-    "theme_color": "#F77171",
-    "background_color": "#F77171",
-    "display": "standalone",
-    "scope": "/",
-    "start_url": "/",
-    "name": "iinact",
-    "short_name": "iinact",
-    "description": "Create your own playlist of DSA questions, get reminded, score yourself, view summary and become a master",
-    "icons": [
-        {
-            "src": "/icon-192x192.png",
-            "sizes": "192x192",
-            "type": "image/png"
-        },
-        {
-            "src": "/icon-256x256.png",
-            "sizes": "256x256",
-            "type": "image/png"
-        },
-        {
-            "src": "/icon-384x384.png",
-            "sizes": "384x384",
-            "type": "image/png"
-        },
-        {
-            "src": "/icon-512x512.png",
-            "sizes": "512x512",
-            "type": "image/png"
-        }
-    ]
+  "theme_color": "#232526",
+  "background_color": "#232526",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "name": "iinact",
+  "short_name": "iinact",
+  "description": "Create your own playlist of DSA questions, get reminded, score yourself, view summary and become a master",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
 }
