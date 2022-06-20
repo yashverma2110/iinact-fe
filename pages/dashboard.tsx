@@ -24,6 +24,8 @@ const Dashboard = () => {
   const [isSubmitAttemptModalShowing, setisSubmitAttemptModalShowing] =
     useState(false);
 
+  const [currentSubmissionProps, setcurrentSubmissionProps] = useState<any>({});
+
   useEffect(() => {
     dispatch(getUserSchedules());
   }, [dispatch]);
@@ -63,8 +65,14 @@ const Dashboard = () => {
     return `${hours}h ${minutes}m ${seconds}s`;
   };
 
-  const toggleSubmitAttemptModal = () => {
+  const toggleSubmitAttemptModal = (list?: string, link?: string) => {
     setisSubmitAttemptModalShowing(!isSubmitAttemptModalShowing);
+
+    if (!list) {
+      setcurrentSubmissionProps({});
+    }
+
+    setcurrentSubmissionProps({ list, link });
   };
 
   return (
@@ -119,7 +127,12 @@ const Dashboard = () => {
                   <div className="grid grid-cols-2 gap-2 mt-2">
                     <Button
                       title="Attempt"
-                      onClick={toggleSubmitAttemptModal}
+                      onClick={() =>
+                        toggleSubmitAttemptModal(
+                          schedule.list._id,
+                          schedule.current
+                        )
+                      }
                     />
                     <Button
                       title="Postpone"
@@ -134,7 +147,9 @@ const Dashboard = () => {
 
         <SubmitAttemptModal
           isShowing={isSubmitAttemptModalShowing}
-          toggle={toggleSubmitAttemptModal}
+          toggle={() => toggleSubmitAttemptModal()}
+          link={currentSubmissionProps.link}
+          list={currentSubmissionProps.list}
         />
       </Layout>
     </div>

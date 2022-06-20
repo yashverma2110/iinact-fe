@@ -1,22 +1,24 @@
-import { list } from "postcss";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { FaCaretDown } from "react-icons/fa";
+import { FaCaretDown, FaTimesCircle } from "react-icons/fa";
 
 type listItem = {
   title: string;
   description?: string;
   value: string;
 };
+
+type dropdownValue = any;
 interface DropdownProps {
   label: string;
   name: string;
-  value: string | undefined;
+  value: dropdownValue;
   list: listItem[];
   defaultValue: string;
   classes?: string;
   setFormState: Dispatch<SetStateAction<any>>;
   direction?: "bottom" | "top";
   forMobile?: boolean;
+  isMultiSelect?: boolean;
 }
 
 const Dropdown = ({
@@ -29,6 +31,7 @@ const Dropdown = ({
   value,
   direction = "bottom",
   forMobile = false,
+  isMultiSelect = false,
 }: DropdownProps) => {
   const [isDropdownCollapsed, setisDropdownCollapsed] = useState(true);
 
@@ -39,7 +42,7 @@ const Dropdown = ({
     }));
   }, [defaultValue, name, setFormState]);
 
-  const getListItemForValue = (value: string) => {
+  const getListItemForValue = (value: any) => {
     for (const item of list) if (item.value === value) return item;
 
     return null;
@@ -49,10 +52,28 @@ const Dropdown = ({
     setisDropdownCollapsed(!isDropdownCollapsed);
   };
 
-  const setOption = (item: listItem) => {
+  const setOption = (
+    listEle: listItem | string,
+    isRemoved: boolean = false
+  ) => {
+    let item = typeof listEle === "string" ? listEle : listEle.value;
+    let valueToSet: any = item;
+
+    if (isMultiSelect) {
+      if (!Array.isArray(valueToSet)) {
+        valueToSet = Array.isArray(value) ? value : [];
+      }
+
+      if (isRemoved) {
+        valueToSet = valueToSet.filter((value: any) => value !== item);
+      } else {
+        valueToSet.push(item);
+      }
+    }
+
     setFormState((formState: any) => ({
       ...formState,
-      [name]: item.value,
+      [name]: valueToSet,
     }));
 
     toggleDropdown();
@@ -68,17 +89,44 @@ const Dropdown = ({
         <button
           className={
             classes +
-            " w-full flex items-center bg-slate-100 p-4 rounded-full show-inner text-sm tracking-tight font-semibold"
+            " w-full flex items-center bg-slate-100 p-3 rounded-full show-inner text-sm tracking-tight font-semibold"
           }
           onClick={toggleDropdown}
         >
-          {getListItemForValue(value ?? defaultValue)?.title}
+          {isMultiSelect
+            ? null
+            : getListItemForValue(value ?? defaultValue)?.title}
+          {isMultiSelect ? (
+            <div
+              className="flex items-center flex-wrap"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {Array.isArray(value)
+                ? value.map((item: any, eleIndex: number) => (
+                    <div
+                      className="flex items-center bg-red-400 px-2 mx-1 text-white font-semibold rounded-lg"
+                      key={item + "-" + eleIndex}
+                    >
+                      {getListItemForValue(item)?.title}
+                      <button
+                        className="ml-1"
+                        onClick={() => {
+                          setOption(item, true);
+                        }}
+                      >
+                        <FaTimesCircle />
+                      </button>
+                    </div>
+                  ))
+                : null}
+            </div>
+          ) : null}
           <div className="ml-auto" onClick={toggleDropdown}>
             <FaCaretDown />
           </div>
         </button>
         <div
-          className={`absolute ${
+          className={`absolute z-s-max ${
             direction === "bottom"
               ? `${
                   forMobile
@@ -90,11 +138,16 @@ const Dropdown = ({
             isDropdownCollapsed ? "scale-y-0" : "scale-y-100"
           }`}
         >
-          {list.map((item) => (
+          {list.map((item, index) => (
             <button
-              key={item.value}
-              className="w-full py-2 px-4 bg-white shadow-lg text-left text-sm border-b border-b-slate-200 hover:bg-slate-100"
+              key={item.value + "-" + index}
+              className={`w-full py-2 px-4 shadow-lg text-left text-sm border-b border-b-slate-200 hover:bg-slate-100 bg-white`}
               onClick={() => setOption(item)}
+              disabled={
+                isMultiSelect && Array.isArray(value)
+                  ? value.includes(item.value)
+                  : value === item.value
+              }
             >
               {item.title}
             </button>

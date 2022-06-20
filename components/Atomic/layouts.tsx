@@ -1,5 +1,5 @@
-import { useRouter } from "next/router";
 import React, { useEffect } from "react";
+import { useRouter } from "next/router";
 import { FaDoorOpen } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../redux/auth/actions.auth";
@@ -36,8 +36,10 @@ const Layout = ({ children }: any) => {
         return "View active and upcoming reminders. Change, cancel or postpone events";
       case "/lists":
         return "Create, edit, share or delete your playlists";
+      case "/summary":
+        return "Review your submissions, track your progress and master";
       default:
-        return "";
+        return "Something awesome is in progress...";
     }
   };
 
