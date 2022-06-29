@@ -1,4 +1,4 @@
-import { API_SERVICE } from "../../config/api.service";
+import { AUTH_API_SERVICE } from "../../config/api.service";
 import submissionActionTypes from "./action-types.submission";
 
 interface createSubmittionPayload {
@@ -13,7 +13,7 @@ interface createSubmittionPayload {
 const createSubmission = (data: createSubmittionPayload) => {
   return {
     type: submissionActionTypes.CREATE_SUBMISSION,
-    payload: API_SERVICE.post("submission/create", data),
+    payload: AUTH_API_SERVICE.post("submission/create", data),
   };
 };
 

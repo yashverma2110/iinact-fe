@@ -4,6 +4,7 @@ import { FaDoorOpen } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../redux/auth/actions.auth";
 import Button from "./Button";
+import { isEmpty } from "lodash";
 
 const Layout = ({ children }: any) => {
   const dispatch = useDispatch();
@@ -18,14 +19,14 @@ const Layout = ({ children }: any) => {
       router.push("/login");
     }
 
-    if (!user && token) {
+    if (isEmpty(user) && token) {
       dispatch(getUser({ token }));
     }
   }, [user, dispatch, router]);
 
   // redirects to login if token is invalid or the get user API fails
   useEffect(() => {
-    if (getUserError && !user) {
+    if (getUserError && isEmpty(user)) {
       router.push("/login");
     }
   }, [getUserError, router, user]);

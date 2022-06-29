@@ -5,6 +5,7 @@ type listItem = {
   title: string;
   description?: string;
   value: string;
+  color?: string;
 };
 
 type dropdownValue = any;
@@ -19,6 +20,8 @@ interface DropdownProps {
   direction?: "bottom" | "top";
   forMobile?: boolean;
   isMultiSelect?: boolean;
+  enableInput?: boolean;
+  onCustomInput?: (value: string) => void;
 }
 
 const Dropdown = ({
@@ -32,6 +35,8 @@ const Dropdown = ({
   direction = "bottom",
   forMobile = false,
   isMultiSelect = false,
+  enableInput = true,
+  onCustomInput = () => {},
 }: DropdownProps) => {
   const [isDropdownCollapsed, setisDropdownCollapsed] = useState(true);
 
@@ -104,7 +109,8 @@ const Dropdown = ({
               {Array.isArray(value)
                 ? value.map((item: any, eleIndex: number) => (
                     <div
-                      className="flex items-center bg-red-400 px-2 mx-1 text-white font-semibold rounded-lg"
+                      className="flex items-center bg-red-400 capitalize p-2 mx-1 text-white font-bold rounded-lg"
+                      style={{ background: getListItemForValue(item)?.color }}
                       key={item + "-" + eleIndex}
                     >
                       {getListItemForValue(item)?.title}
@@ -121,6 +127,20 @@ const Dropdown = ({
                 : null}
             </div>
           ) : null}
+          {enableInput ? (
+            <input
+              type="text"
+              placeholder="Press enter to add"
+              className=" rounded-md p-2"
+              onKeyDown={(e: any) => {
+                if (e.key === "Enter") {
+                  onCustomInput(e.target.value);
+                }
+              }}
+            />
+          ) : (
+            <></>
+          )}
           <div className="ml-auto" onClick={toggleDropdown}>
             <FaCaretDown />
           </div>
@@ -141,7 +161,7 @@ const Dropdown = ({
           {list.map((item, index) => (
             <button
               key={item.value + "-" + index}
-              className={`w-full py-2 px-4 shadow-lg text-left text-sm border-b border-b-slate-200 hover:bg-slate-100 bg-white`}
+              className={`w-full capitalize py-2 px-4 shadow-lg text-left text-sm border-b border-b-slate-200 hover:bg-slate-100 bg-white`}
               onClick={() => setOption(item)}
               disabled={
                 isMultiSelect && Array.isArray(value)

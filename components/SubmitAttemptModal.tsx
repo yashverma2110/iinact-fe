@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Dropdown from "./Atomic/Dropdown";
 import Input from "./Atomic/Input";
 import Modal from "./Atomic/Modal";
 import Toggle from "./Atomic/Toggle";
 import * as yup from "yup";
+import { addTagForUser } from "../redux/auth/actions.auth";
+import { createSubmission } from "../redux/submission/actions.submission";
 
 interface SubmitAttemptModalProps {
   isShowing: boolean;
@@ -20,15 +22,16 @@ const SubmitAttemptModal = ({
   link,
 }: SubmitAttemptModalProps) => {
   const dispatch = useDispatch();
+  const { user, addTagError } = useSelector((state: any) => state.auth);
   const [formData, setFormData] = useState<any>({ reviewAgain: false });
   const [errors, setErrors] = useState<any>({});
 
-  const createSubmission = async () => {
+  const handleCreateSubmission = async () => {
     const createSubmissionValidator = yup.object().shape({
       link: yup.string().required(),
       list: yup.string().required(),
-      tag: yup.string().required("Tag is required"),
-      reamrk: yup.string().min(8).max(200).required("Remark is required"),
+      tag: yup.array().min(1).of(yup.string()),
+      remark: yup.string().min(8).max(200).required("Remark is required"),
       score: yup
         .number()
         .min(0)
@@ -46,13 +49,23 @@ const SubmitAttemptModal = ({
       await createSubmissionValidator.validate(payload);
       setErrors({});
     } catch (error: any) {
+      console.log(error);
       setErrors({
         [error.path]: error.message,
       });
       return;
     }
 
-    dispatch(payload);
+    dispatch(createSubmission(payload));
+  };
+
+  const handleTagAddition = (value: string) => {
+    dispatch(
+      addTagForUser({
+        name: value,
+        color: "#ece",
+      })
+    );
   };
 
   return (
@@ -60,9 +73,10 @@ const SubmitAttemptModal = ({
       show={isShowing}
       title="Submit attempt"
       subtitle="🎉 consistency is key"
-      primaryBtn={{ title: "Save", onClick: () => createSubmission() }}
+      primaryBtn={{ title: "Save", onClick: () => handleCreateSubmission() }}
       closeBtn={{ title: "Cancel", onClick: () => toggle() }}
       onClose={() => toggle()}
+      errorMessage={addTagError?.message}
     >
       <div>
         <Input
@@ -92,12 +106,16 @@ const SubmitAttemptModal = ({
           defaultValue=""
           label="Tag"
           isMultiSelect
-          list={[
-            { title: "DSA", value: "dsa" },
-            { title: "DSA", value: "dsa" },
-            { title: "DSA", value: "dsa" },
-          ]}
+          list={
+            user.tags?.map((item: any) => ({
+              ...item,
+              title: item.name,
+              value: item.name,
+            })) ?? []
+          }
           setFormState={setFormData}
+          enableInput
+          onCustomInput={handleTagAddition}
         />
 
         <Toggle

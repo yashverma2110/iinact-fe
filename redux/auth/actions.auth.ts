@@ -1,4 +1,4 @@
-import { API_SERVICE } from "../../config/api.service";
+import { API_SERVICE, AUTH_API_SERVICE } from "../../config/api.service";
 import authActionTypes from "./action-types.auth";
 
 interface loginPayload {
@@ -39,4 +39,15 @@ const getUser = (data: getUserPayload) => {
   };
 };
 
-export { login, signup, getUser };
+interface addTagForUser {
+  name: string;
+  color: string;
+}
+const addTagForUser = (payload: addTagForUser) => {
+  return {
+    type: authActionTypes.ADD_TAG_FOR_USER,
+    payload: AUTH_API_SERVICE.post("user/tag", payload),
+  };
+};
+
+export { login, signup, getUser, addTagForUser };
