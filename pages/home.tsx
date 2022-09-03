@@ -1,7 +1,7 @@
-import type { NextPage } from 'next'
 import Head from 'next/head';
+import Card from '../components/Card';
 
-const Home: NextPage = () => {
+function HomePage() {
   return (
     <div>
       <Head>
@@ -10,11 +10,13 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main></main>
+      <main>
+        <Card>Some stuff</Card>
+      </main>
 
       <footer></footer>
     </div>
   );
-};
+}
 
-export default Home
+export default HomePage;
