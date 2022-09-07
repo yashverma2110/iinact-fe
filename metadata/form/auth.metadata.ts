@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-export const LoginFormMetadata: FormMetadata[] = [
+export const SignupFormMetadata: FormMetadata[] = [
   {
     label: 'First Name',
     placeholder: 'What to call you',
@@ -30,5 +30,49 @@ export const LoginFormMetadata: FormMetadata[] = [
       .string()
       .required('Email is required')
       .email('Should be a valid email'),
+  },
+  {
+    label: 'Password',
+    placeholder: 'some secret stuff',
+    name: 'password',
+    required: true,
+    type: 'password',
+    validate: yup
+      .string()
+      .required('Password is required')
+      .min(8)
+      .max(12)
+      .test(
+        'password-validation',
+        'One uppercase, number and special character',
+        (value: any) => {
+          const regex =
+            /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+
+          return regex.test(value);
+        }
+      ),
+  },
+];
+
+export const LoginFormMetadata: FormMetadata[] = [
+  {
+    label: 'Email',
+    placeholder: 'Where can we reach out',
+    name: 'email',
+    required: true,
+    type: 'email',
+    validate: yup
+      .string()
+      .required('Email is required')
+      .email('Should be a valid email'),
+  },
+  {
+    label: 'Password',
+    placeholder: 'some secret stuff',
+    name: 'password',
+    required: true,
+    type: 'password',
+    validate: yup.string().required('Password is required'),
   },
 ];

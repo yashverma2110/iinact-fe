@@ -2,8 +2,10 @@ import actionTypes from '../actionTypes';
 
 const authReducer = (
   state = {
-    firstName: 'guest',
-    lastName: 'guest name',
+    firstName: '',
+    lastName: '',
+    email: '',
+    tags: [],
     token: null,
   },
   action: {
@@ -15,7 +17,12 @@ const authReducer = (
     case actionTypes.AUTH.LOGIN:
       return {
         ...state,
-        name: action.payload,
+        ...action.payload,
+      };
+    case actionTypes.AUTH.SIGNUP:
+      return {
+        ...state,
+        ...action.payload,
       };
     default:
       return { ...state };
