@@ -6,6 +6,10 @@ const actionTypes = {
   SCHEDULE: {
     ALL: 'ALL',
   },
+  LIST: {
+    ALL: 'GET_ALL',
+    CREATE: 'CREATE_LIST',
+  },
 };
 
 export default actionTypes;

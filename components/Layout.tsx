@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Routes from '../metadata/Route';
-import Tooltip from './Tooltip';
 import Modal from './Modal';
 import { FormHandler } from './FormHandler';
 import {
@@ -50,6 +49,7 @@ const Layout = ({ children }: LayoutProps) => {
   }, [router.pathname, dispatch]);
 
   const handleSubmit = async (user: any) => {
+    // TODO: Handle a good way for error display
     if (isForLogin) {
       const { success, data, error } = await AuthService.logIn(user);
       if (success) {
@@ -59,8 +59,13 @@ const Layout = ({ children }: LayoutProps) => {
       }
       return;
     }
+    const { success, data, error } = await AuthService.signUp(user);
 
-    dispatch(authActions.signUp(user));
+    if (success) {
+      LocalStorage.setAuthToken(data.token);
+      dispatch(authActions.signUp(data));
+      setIsAuthModalShowing(false);
+    }
   };
 
   return (
@@ -69,12 +74,10 @@ const Layout = ({ children }: LayoutProps) => {
         {Routes.map((route) => (
           <Link key={route.displayName} href={route.route}>
             <a className="w-fit p-4 hover:shadow-inner">
-              <Tooltip title={route.displayName} position="right" size="xl">
-                <FontAwesomeIcon
-                  className="text-gray-50 text-2xl"
-                  icon={route.icon}
-                />
-              </Tooltip>
+              <FontAwesomeIcon
+                className="text-gray-50 text-2xl"
+                icon={route.icon}
+              />
             </a>
           </Link>
         ))}
