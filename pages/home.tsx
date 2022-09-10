@@ -1,7 +1,22 @@
 import Head from 'next/head';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import Card from '../components/Card';
+import scheduleActions from '../redux/actions/schedule.actions';
+import ScheduleService from '../services/ScheduleService';
 
 function HomePage() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    (async () => {
+      const response = await ScheduleService.getAll();
+      if (response.success) {
+        dispatch(scheduleActions.getAll(response.data.schedules));
+      }
+    })();
+  }, [dispatch]);
+
   return (
     <div>
       <Head>
