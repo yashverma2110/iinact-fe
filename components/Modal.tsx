@@ -29,16 +29,16 @@ const Modal = ({
     return <></>;
   }
 
-  const widthForModal = () => {
+  const classesForModal = () => {
     switch (size) {
       case 'xs':
-        return 'w-1/6';
+        return 'mx-2 w-full md:mx-0 md:w-1/6';
       case 'md':
-        return 'w-2/6';
+        return 'mx-2 w-full md:mx-0 md:w-2/6';
       case 'lg':
-        return 'w-1/2';
+        return 'mx-2 w-full md:mx-0 md:w-1/2';
       case 'xl':
-        return 'w-6/7';
+        return 'mx-2 w-full md:mx-0 md:w-6/7';
       default:
         break;
     }
@@ -47,7 +47,7 @@ const Modal = ({
   return (
     <div className="h-screen w-screen fixed bg-black bg-opacity-60 top-0 left-0 flex items-center justify-center">
       <div
-        className={`bg-white relative p-4 shadow-lg rounded ${widthForModal()}`}
+        className={`bg-white relative p-4 shadow-lg rounded ${classesForModal()}`}
       >
         <button
           className="close-modal-button absolute top-2 right-2"
