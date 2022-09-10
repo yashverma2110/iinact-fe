@@ -3,6 +3,7 @@ import {
   faHouse,
   faTableList,
   faChartPie,
+  faRightFromBracket,
 } from '@fortawesome/free-solid-svg-icons';
 
 const Routes: RouteMetadata[] = [
@@ -13,13 +14,18 @@ const Routes: RouteMetadata[] = [
   },
   {
     route: '/list',
-    displayName: 'All lists',
+    displayName: 'Lists',
     icon: faTableList,
   },
   {
     route: '/dashboard',
-    displayName: 'Track progress',
+    displayName: 'Report',
     icon: faChartPie,
+  },
+  {
+    route: '/logout',
+    displayName: 'Logout',
+    icon: faRightFromBracket,
   },
 ];
 
