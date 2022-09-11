@@ -61,6 +61,7 @@ const Layout = ({ children }: LayoutProps) => {
         dispatch(authActions.logIn(data));
         setIsAuthModalShowing(false);
       }
+      window.location.reload();
       return;
     }
     const { success, data, error } = await AuthService.signUp(user);
@@ -70,6 +71,10 @@ const Layout = ({ children }: LayoutProps) => {
       dispatch(authActions.signUp(data));
       setIsAuthModalShowing(false);
     }
+  };
+
+  const isRouteActive = (route: string) => {
+    return router.pathname.includes(route);
   };
 
   return (
@@ -103,7 +108,13 @@ const Layout = ({ children }: LayoutProps) => {
 
           {Routes.map((route) => (
             <Link key={route.displayName} href={route.route}>
-              <a className="w-full px-2 py-4 text-white hover:bg-white hover:text-black flex items-center">
+              <a
+                className={`w-full px-2 py-4 text-white flex items-center ${
+                  isRouteActive(route.route)
+                    ? 'bg-white text-black'
+                    : 'hover:bg-white hover:text-black '
+                }`}
+              >
                 <FontAwesomeIcon
                   icon={route.icon}
                   size="lg"

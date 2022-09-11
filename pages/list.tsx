@@ -1,27 +1,18 @@
-import { KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import Modal from '../components/Modal';
-import { FormHandler } from '../components/FormHandler';
-import { CreateListMetadata } from '../metadata/form/list.metadata';
-import { isValidLink } from '../utils/methods';
-import ListService from '../services/ListService';
 import { useDispatch, useSelector } from 'react-redux';
-import listActions from '../redux/actions/list.actions';
-import Card from '../components/Card';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faPencil } from '@fortawesome/free-solid-svg-icons';
+import ListService from '../services/ListService';
+import listActions from '../redux/actions/list.actions';
+import Card from '../components/Card';
+import ListCreationModal from '../components/Functional/ListCreationModal';
 
 const List: NextPage = () => {
-  const [isScheduleCreateModalShowing, setIsScheduleCreateModalShowing] =
-    useState<boolean>(false);
-  const [inValidLinkErrorMessage, setInValidLinkErrorMessage] = useState<
-    string | null
-  >(null);
-  const [listOfLinks, setListOfLinks] = useState<string[]>([]);
-
-  const inputRef = useRef<any>();
   const dispatch = useDispatch();
+  const [isListCreationModalShowing, setIsListCreationModalShowing] =
+    useState<boolean>(false);
   const { userOwned = [] } = useSelector((state: any) => state.list);
 
   useEffect(() => {
@@ -33,44 +24,6 @@ const List: NextPage = () => {
       }
     })();
   }, [dispatch]);
-
-  const handleChangeInLinkList = (
-    action: 'add' | 'remove',
-    removeIndex?: number
-  ) => {
-    const link = inputRef.current?.value;
-    if (action === 'add') {
-      if (!isValidLink(link)) {
-        setInValidLinkErrorMessage('Link is invalid');
-        return;
-      }
-
-      if (listOfLinks.includes(link)) {
-        setInValidLinkErrorMessage('This link already exists!');
-        return;
-      }
-
-      setInValidLinkErrorMessage(null);
-      setListOfLinks([link, ...listOfLinks]);
-    }
-  };
-
-  const handleListCreation = async (list: any) => {
-    const payload = {
-      ...list,
-      urls: listOfLinks,
-    };
-    const { success, data, error } = await ListService.create(payload);
-    if (success) {
-      dispatch(listActions.create(data));
-    }
-  };
-
-  const handleKeydown = (key: string) => {
-    if (key === 'Enter') {
-      handleChangeInLinkList('add');
-    }
-  };
 
   return (
     <div>
@@ -129,54 +82,11 @@ const List: NextPage = () => {
           })}
         </div>
 
-        <Modal
-          size="md"
-          isShowing={isScheduleCreateModalShowing}
-          setIsShowing={setIsScheduleCreateModalShowing}
-          title="Create a schedule to be reminded"
-          subtitle="Start your routine and stay in track"
-        >
-          <FormHandler
-            context={CreateListMetadata}
-            onSubmit={handleListCreation}
-            buttonTitle="Create"
-          >
-            <>
-              <div className="p-2 mt-2 bg-gray-100 shadow-inner rounded flex flex-col max-h-40 overflow-y-auto">
-                {listOfLinks.map((link) => {
-                  return (
-                    <a
-                      className="shadow-md py-1 text-sm font-semibold text-purple-400 bg-white rounded-full px-2 my-1"
-                      key={link}
-                      href={link}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      {link}
-                    </a>
-                  );
-                })}
-              </div>
-
-              <input
-                ref={inputRef}
-                className="w-full mt-2 bg-gray-100 shadow-inner rounded text-sm p-1"
-                type="text"
-                placeholder="https://leetcode.com/some-question"
-                onKeyDown={(event) => handleKeydown(event.key)}
-              />
-
-              {inValidLinkErrorMessage && (
-                <div className="text-xs text-red-500 font-light">
-                  {inValidLinkErrorMessage}
-                </div>
-              )}
-            </>
-          </FormHandler>
-        </Modal>
+        <ListCreationModal
+          isShowing={isListCreationModalShowing}
+          setIsShowing={setIsListCreationModalShowing}
+        />
       </main>
-
-      <footer></footer>
     </div>
   );
 };
