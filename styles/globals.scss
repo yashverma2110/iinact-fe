@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import './variables.scss';
+
 body {
   margin: 0;
   padding: 0;
@@ -12,9 +14,30 @@ body {
   background: #6a3093;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to bottom, #a044ff, #6a3093);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to bottom, #a044ff, #6a3093); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  width: $sidebar-width-desktop;
 }
 
 .no-auth-bg {
   background: url('https://res.cloudinary.com/dzq6ddznb/image/upload/v1662842178/iinact/sigmund-OORBdaMZCPw-unsplash_mqqt4m.jpg');
   background-size: cover;
+}
+
+.max-link-width {
+  width: $link-max-width;
+  max-width: $link-max-width;
+}
+
+.fade-in {
+  animation: fade-in 500ms ease-in-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }

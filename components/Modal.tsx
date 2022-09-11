@@ -45,7 +45,7 @@ const Modal = ({
   };
 
   return (
-    <div className="h-screen w-screen fixed bg-black bg-opacity-60 top-0 left-0 flex items-center justify-center">
+    <div className="fade-in h-screen w-screen fixed bg-black bg-opacity-60 top-0 left-0 flex items-center justify-center">
       <div
         className={`bg-white relative p-4 shadow-lg rounded ${classesForModal()}`}
       >

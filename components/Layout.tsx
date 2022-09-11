@@ -101,18 +101,20 @@ const Layout = ({ children }: LayoutProps) => {
               &nbsp;
               {lastName}
             </div>
-            <div className="bg-white rounded-lg mt-2 text-black text-xxs p-1">
+            <div className="bg-white rounded-xl mt-2 text-black text-xs p-1 max-w-full overflow-hidden overflow-ellipsis">
               {email}
             </div>
           </div>
+
+          <hr className="w-full h-slim bg-gray-50" />
 
           {Routes.map((route) => (
             <Link key={route.displayName} href={route.route}>
               <a
                 className={`w-full px-2 py-4 text-white flex items-center ${
                   isRouteActive(route.route)
-                    ? 'bg-white text-black'
-                    : 'hover:bg-white hover:text-black '
+                    ? 'bg-white bg-opacity-30'
+                    : 'hover:bg-white hover:bg-opacity-30'
                 }`}
               >
                 <FontAwesomeIcon
@@ -129,8 +131,8 @@ const Layout = ({ children }: LayoutProps) => {
         </aside>
       )}
 
-      <div className="w-full flex flex-col">
-        <main className="p-4">{children}</main>
+      <div className="w-full h-full flex flex-col">
+        <main>{children}</main>
       </div>
 
       <Modal
